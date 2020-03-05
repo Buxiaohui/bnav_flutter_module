@@ -1,5 +1,5 @@
+import 'package:bnav_flutter_module/setting/setting.dart';
 import 'package:flutter/material.dart';
-import 'package:music_flutter/setting/setting.dart';
 
 import 'music/page_music_player.dart';
 

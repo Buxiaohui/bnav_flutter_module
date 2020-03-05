@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:bnav_flutter_module/utils/StringUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:music_flutter/utils/StringUtils.dart';
 
 class SettingPage extends StatefulWidget {
   SettingPage();
