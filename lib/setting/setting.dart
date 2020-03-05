@@ -26,8 +26,10 @@ class _SettingPageState extends State<SettingPage> {
   static const String COMMUTE_GUIDE_SETTING_SOUND_ELE_EYE = 'commute_guide_setting_sound_ele_eye';
   static const String COMMUTE_GUIDE_SETTING_SCALE = 'commute_guide_scale_setting';
   static const String NAVI_MODE_DAY_AND_NIGHT = 'NAVI_MODE_DAY_AND_NIGHT';
-  static const String CONCERN_ROAD = 'ConcernRoad';
-  static const String USER_HELPER = 'UserHelper';
+
+  static const String NAVI_MODE_DAY_BOOLEAN = 'NAVI_MODE_DAY_AND_NIGHT_BOOLEAN';
+  static const String CONCERN_ROAD = 'ConcernRoad'; // 关注路线
+  static const String USER_HELPER = 'UserHelper'; // UFO
 
   /// 日夜模式 ：自动模式
   static const int DAY_NIGHT_MODE_AUTO = 1;
@@ -52,7 +54,8 @@ class _SettingPageState extends State<SettingPage> {
     isSoundEnabled = await _methodChannel.invokeMethod('isSoundEnabled');
     isTurnSoundEnabled = await _methodChannel.invokeMethod('isTurnSoundEnabled');
     isEleEyeSoundEnabled = await _methodChannel.invokeMethod('isEleEyeSoundEnabled');
-    dayMode = await _methodChannel.invokeMethod('getDayMode');
+    dayMode = await _methodChannel.invokeMethod('getDayModePrefer');
+    isDayMode = await _methodChannel.invokeMethod('isDayMode');
     isScaleModeEnabled = await _methodChannel.invokeMethod('isScaleModeEnabled');
     setState(() {});
   }
@@ -63,7 +66,10 @@ class _SettingPageState extends State<SettingPage> {
     _methodChannel.setMethodCallHandler((methodCall) => Future<dynamic>(() {
           String methodName = methodCall.method;
           print("methodChannel,methodName:$methodName");
+          // 事件
           switch (methodName) {
+
+            /// true|false选择类的item
             case 'onSwitchSettingChange':
               {
                 String key = methodCall.arguments["arg0"];
@@ -86,12 +92,24 @@ class _SettingPageState extends State<SettingPage> {
                       isEleEyeSoundEnabled = val;
                     }
                     break;
+                  case NAVI_MODE_DAY_BOOLEAN:
+                    {
+                      isDayMode = val;
+                    }
+                    break;
+                  case COMMUTE_GUIDE_SETTING_SCALE:
+                    {
+                      isScaleModeEnabled = val;
+                    }
+                    break;
                   default:
                     break;
                 }
               }
               break;
-            case 'onSelectGroupSettingChange':
+
+            /// 选择不同子view的item
+            case 'onSelectGroupSettingChange': // 选择类的item
               {
                 String key = methodCall.arguments["arg0"];
                 int val = methodCall.arguments["arg1"];
@@ -119,14 +137,19 @@ class _SettingPageState extends State<SettingPage> {
             print("onSwitchSettingChange,setState,isEleEyeSoundEnabled:$isEleEyeSoundEnabled");
           });
           // 给Android端的返回值
-          return "methodChannel return msg";
+          return "return msg from flutter methodChannel-handler";
         }));
 
     super.initState();
     initSettingWidgetsState();
   }
 
+  /// 白天模式|黑夜模式|自动模式，代表几个选项的选中态
   int dayMode = DAY_NIGHT_MODE_AUTO;
+
+  /// 白天模式|黑夜模式，依据此字段刷新UI
+  bool isDayMode = true;
+
   bool isScaleModeEnabled = false;
   bool isSoundEnabled = false;
   bool isTurnSoundEnabled = false;
@@ -259,7 +282,7 @@ class _SettingPageState extends State<SettingPage> {
       textColor = Colors.white;
       bgColor = Colors.blueAccent;
     } else {
-      if (dayMode == DAY_NIGHT_MODE_DAY) {
+      if (isDayMode) {
         textColor = Colors.blueAccent;
         bgColor = Colors.white;
       } else {
