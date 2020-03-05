@@ -149,26 +149,40 @@ class _SettingPageState extends State<SettingPage> {
                       ? "assets/images/nsdk_set_checkin_icon.png"
                       : "assets/images/nsdk_set_checkout_icon.png",
                   COMMUTE_GUIDE_SETTING_SOUND),
-              getDivider(),
-              getSwitchWitchWidget(
-                  "转向提示",
-                  "开启后播报陌生道路转向信息",
-                  isTurnSoundEnabled
-                      ? "assets/images/nsdk_set_checkin_icon.png"
-                      : "assets/images/nsdk_set_checkout_icon.png",
-                  COMMUTE_GUIDE_SETTING_SOUND_TURN),
-              getDivider(),
-              getSwitchWitchWidget(
-                  "电子眼提示",
-                  "开启后播报电子眼提示",
-                  isEleEyeSoundEnabled
-                      ? "assets/images/nsdk_set_checkin_icon.png"
-                      : "assets/images/nsdk_set_checkout_icon.png",
-                  COMMUTE_GUIDE_SETTING_SOUND_ELE_EYE),
+              Visibility(
+                visible: isSoundEnabled,
+                child: Column(
+                  children: <Widget>[
+                    getDivider(),
+                    getSwitchWitchWidget(
+                        "转向提示",
+                        "开启后播报陌生道路转向信息",
+                        isTurnSoundEnabled
+                            ? "assets/images/nsdk_set_checkin_icon.png"
+                            : "assets/images/nsdk_set_checkout_icon.png",
+                        COMMUTE_GUIDE_SETTING_SOUND_TURN),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: isSoundEnabled,
+                child: Column(
+                  children: <Widget>[
+                    getDivider(),
+                    getSwitchWitchWidget(
+                        "电子眼提示",
+                        "开启后播报电子眼提示",
+                        isEleEyeSoundEnabled
+                            ? "assets/images/nsdk_set_checkin_icon.png"
+                            : "assets/images/nsdk_set_checkout_icon.png",
+                        COMMUTE_GUIDE_SETTING_SOUND_ELE_EYE),
+                  ],
+                ),
+              ),
               getDivider(),
               getDayModeWidget(),
               getDivider(),
-              getCommonItemWidget("关注道路", "你想走那条路啊我的哥", "", CONCERN_ROAD),
+              getCommonItemWidget("关注道路(先别点击，会crash)", "你想走那条路啊我的哥", "", CONCERN_ROAD),
               getDivider(),
               getSwitchWitchWidget(
                   "比例尺",
