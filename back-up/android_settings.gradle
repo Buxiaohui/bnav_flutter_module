@@ -1,0 +1,25 @@
+// Generated file. Do not edit.
+include ':app'
+
+rootProject.name = 'android_generated'
+setBinding(new Binding([gradle: this]))
+evaluate(new File(settingsDir, 'include_flutter.groovy'))
+
+def flutterProjectRootF = rootProject.projectDir.parentFile.toPath()
+
+def pluginsF = new Properties()
+def pluginsFileF = new File(flutterProjectRootF.toFile(), '.flutter-plugins')
+if (pluginsFileF.exists()) {
+    pluginsFileF.withReader('UTF-8') { reader -> pluginsF.load(reader) }
+}
+def includeLib(String projectName, File projectDir) {
+    include(projectName)
+    project(projectName).projectDir = projectDir
+}
+pluginsF.each { name, path ->
+    println "pluginNameF:" + name
+    println "pluginPathF:" + path
+    def pluginDirectoryF = flutterProjectRootF.resolve(path).resolve('android').toFile()
+    println "pluginDirectoryF:" + pluginDirectoryF
+    includeLib(":$name", file(pluginDirectoryF))
+}
