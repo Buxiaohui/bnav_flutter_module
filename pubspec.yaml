@@ -113,5 +113,5 @@ flutter:
   # identifiers, which may be completely independent or the same as these.
   module:
     androidX: true
-    androidPackage: buxiaohui.com.music_flutter
-    iosBundleIdentifier: buxiaohui.com.musicFlutter
+    androidPackage: bnav_flutter_module
+    iosBundleIdentifier: bnav_flutter_module

@@ -1,6 +1,6 @@
 <!-- Generated file. Do not edit. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="buxiaohui.com.music_flutter"
+    package="bnav_flutter_module"
     xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.INTERNET"/>
   <application tools:node="merge">

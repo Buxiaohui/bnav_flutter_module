@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "buxiaohui.com.music_flutter.host"
+        applicationId "bnav_flutter_module.host"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1

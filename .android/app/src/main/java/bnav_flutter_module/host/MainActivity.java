@@ -1,4 +1,4 @@
-package buxiaohui.com.music_flutter.host;
+package bnav_flutter_module.host;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
