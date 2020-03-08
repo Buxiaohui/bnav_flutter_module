@@ -71,6 +71,8 @@ flutter:
     # 设置
     - assets/images/nsdk_set_checkin_icon.png
     - assets/images/nsdk_set_checkout_icon.png
+    - assets/images/setting_right_arrow.png
+  
 
   # To add Flutter specific assets to your application, add an assets section, 
   # like this:

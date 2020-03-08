@@ -1,4 +1,5 @@
 import 'package:bnav_flutter_module/setting/setting.dart';
+import 'package:bnav_flutter_module/setting/setting_new.dart';
 import 'package:flutter/material.dart';
 
 import 'music/page_music_player.dart';
@@ -11,6 +12,8 @@ Widget _widgetForRoute(String route) {
       return new MusicPage();
     case 'route2':
       return new SettingPage();
+    case 'route3':
+      return new NewSettingPage();
     default:
       // echo  -e "\033[1;31mI ♡  You \e[0m"
       return Center(

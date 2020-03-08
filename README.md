@@ -11,3 +11,4 @@ For help getting started with Flutter, view our online
 - [ ] 日夜模式：  
 未开发，我认为使用theme的方式可以，简单页面的每个item用变量控制也可以
 - [ ] 声音设置项的隐藏和显示是跳变的，最好做动画
+- [ ] 用一些特定widget优化item层级，比如positioned

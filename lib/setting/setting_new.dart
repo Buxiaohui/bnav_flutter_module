@@ -1,9 +1,14 @@
 import 'dart:async';
 
+import 'package:bnav_flutter_module/setting/item_mode.dart';
+import 'package:bnav_flutter_module/setting/setting_more_item.dart';
+import 'package:bnav_flutter_module/setting/setting_switch_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+
+import 'setting_day_mode_item.dart';
 
 class NewSettingPage extends StatefulWidget {
   NewSettingPage();
@@ -28,6 +33,10 @@ class _NewSettingPageState extends State<NewSettingPage> {
   static const String CONCERN_ROAD = 'ConcernRoad'; // 关注路线
   static const String USER_HELPER = 'UserHelper'; // UFO
 
+  static const int SWITCH_ITEM_TYPE = 0;
+  static const int DAY_MODE_ITEM_TYPE = 1;
+  static const int MORE_ITEM_TYPE = 2;
+
   initSettingWidgetsState() async {
     isSoundEnabled = await _methodChannel.invokeMethod('isSoundEnabled');
     isTurnSoundEnabled = await _methodChannel.invokeMethod('isTurnSoundEnabled');
@@ -37,6 +46,8 @@ class _NewSettingPageState extends State<NewSettingPage> {
     isScaleModeEnabled = await _methodChannel.invokeMethod('isScaleModeEnabled');
     setState(() {});
   }
+
+  List<BaseItemMode> items;
 
   @override
   void initState() {
@@ -117,8 +128,76 @@ class _NewSettingPageState extends State<NewSettingPage> {
           return "return msg from flutter methodChannel-handler";
         }));
 
+    items = List();
+    items.clear();
+    SwitchItemMode soundSwitchItemMode = SwitchItemMode();
+    soundSwitchItemMode.tag = COMMUTE_GUIDE_SETTING_SOUND;
+    soundSwitchItemMode.type = SWITCH_ITEM_TYPE;
+    soundSwitchItemMode.callback = onSwitchBtnClick;
+    soundSwitchItemMode.mainTitle = "播报声音";
+    soundSwitchItemMode.subTitle = "开启后播报通勤信息提示";
+    soundSwitchItemMode.isDay = false;
+    items.add(soundSwitchItemMode);
+
+    SwitchItemMode turnSoundSwitchItemMode = SwitchItemMode();
+    turnSoundSwitchItemMode.tag = COMMUTE_GUIDE_SETTING_SOUND_TURN;
+    turnSoundSwitchItemMode.type = SWITCH_ITEM_TYPE;
+    turnSoundSwitchItemMode.callback = onSwitchBtnClick;
+    turnSoundSwitchItemMode.mainTitle = "转向提示";
+    turnSoundSwitchItemMode.subTitle = "开启后播报陌生道路转向信息";
+    turnSoundSwitchItemMode.isDay = false;
+    items.add(turnSoundSwitchItemMode);
+
+    SwitchItemMode eleSoundSwitchItemMode = SwitchItemMode();
+    eleSoundSwitchItemMode.tag = COMMUTE_GUIDE_SETTING_SOUND_ELE_EYE;
+    eleSoundSwitchItemMode.type = SWITCH_ITEM_TYPE;
+    eleSoundSwitchItemMode.callback = onSwitchBtnClick;
+    eleSoundSwitchItemMode.mainTitle = "电子眼提示";
+    eleSoundSwitchItemMode.subTitle = "开启后播报电子眼提示";
+    eleSoundSwitchItemMode.callback = onSwitchBtnClick;
+    eleSoundSwitchItemMode.isDay = false;
+    items.add(eleSoundSwitchItemMode);
+
+    DayModeItemMode dayModeItemMode = DayModeItemMode();
+    dayModeItemMode.tag = NAVI_MODE_DAY_AND_NIGHT;
+    dayModeItemMode.type = DAY_MODE_ITEM_TYPE;
+    dayModeItemMode.mainTitle = "日夜模式";
+    dayModeItemMode.prefer = DAY_NIGHT_MODE_AUTO;
+    dayModeItemMode.callback = onDayModeClick;
+    dayModeItemMode.isDay = false;
+    items.add(dayModeItemMode);
+
+    MoreItemMode concernRoadItemMode = MoreItemMode();
+    concernRoadItemMode.tag = CONCERN_ROAD;
+    concernRoadItemMode.type = MORE_ITEM_TYPE;
+    concernRoadItemMode.mainTitle = "关注道路(先别点击，会crash)";
+    concernRoadItemMode.subTitle = "你想走那条路啊我的哥";
+    concernRoadItemMode.callback = onMoreBtnClick;
+    concernRoadItemMode.isDay = false;
+    items.add(concernRoadItemMode);
+
+    MoreItemMode ufoItemMode = MoreItemMode();
+    ufoItemMode.tag = USER_HELPER;
+    ufoItemMode.type = MORE_ITEM_TYPE;
+    ufoItemMode.mainTitle = "帮助与反馈";
+    ufoItemMode.subTitle = "有问题就说，我给你解决";
+    ufoItemMode.callback = onMoreBtnClick;
+    ufoItemMode.isDay = false;
+    items.add(ufoItemMode);
+    // initSettingWidgetsState();
     super.initState();
-    initSettingWidgetsState();
+  }
+
+  void onDayModeClick(int index) {
+//    _methodChannel.invokeMethod('onDayModeItemClick', {'index': index});
+  }
+
+  void onSwitchBtnClick(String tag) {
+//    _methodChannel.invokeMethod('onSwitchItemClick', {'key': '$tag'});
+  }
+
+  void onMoreBtnClick(String tag) {
+//    _methodChannel.invokeListMethod("onCommonItemClick", {'key': '$tag'});
   }
 
   /// 白天模式|黑夜模式|自动模式，代表几个选项的选中态
@@ -138,8 +217,26 @@ class _NewSettingPageState extends State<NewSettingPage> {
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: true,
-      home: Container(child: ListView.builder(itemBuilder: null)),
+      home: Container(
+          child: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: _buildItem,
+      )),
     );
+  }
+
+  Widget _buildItem(BuildContext context, int index) {
+    print("_buildItem index $index");
+    switch (items[index].type) {
+      case SWITCH_ITEM_TYPE:
+        return SwitchItemWidget(items[index]);
+      case MORE_ITEM_TYPE:
+        return MoreItemWidget(items[index]);
+      case DAY_MODE_ITEM_TYPE:
+        return DayModeItemWidget(items[index]);
+      default:
+        return null;
+    }
   }
 
   Widget getDivider() {
@@ -147,11 +244,6 @@ class _NewSettingPageState extends State<NewSettingPage> {
       height: 10,
     );
   }
-
-  // _methodChannel.invokeMethod('onDayModeItemClick', {'index': index});
-  // _methodChannel.invokeListMethod("onCommonItemClick", {'key': '$tag'});
-  // _methodChannel.invokeMethod('onSwitchItemClick', {'key': '$tag'});
-
 }
 
 void main() => runApp(NewSettingPage());

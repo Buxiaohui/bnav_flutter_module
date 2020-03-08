@@ -1,7 +1,10 @@
 import 'package:bnav_flutter_module/setting/callback.dart';
+import 'package:bnav_flutter_module/setting/setting_base_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'item_mode.dart';
 
 /// 日夜模式 ：自动模式
 const int DAY_NIGHT_MODE_AUTO = 1;
@@ -12,40 +15,33 @@ const int DAY_NIGHT_MODE_DAY = 2;
 /// 日夜模式 ：夜晚模式
 const int DAY_NIGHT_MODE_NIGHT = 3;
 
-class DayModeItemWidget extends StatefulWidget {
-  DayModeItem dayModeItem;
-
-  DayModeItemWidget.init(this.dayModeItem);
-
-  DayModeItemWidget();
-
+class DayModeItemWidget extends BaseItemWidget<DayModeItemMode> {
   factory DayModeItemWidget.forDesignTime() {
-    DayModeItem dayModeItem = DayModeItem();
+    DayModeItemMode dayModeItem = DayModeItemMode();
     dayModeItem.isDay = true;
     dayModeItem.prefer = DAY_NIGHT_MODE_AUTO;
     dayModeItem.itemHeight = 90;
-    return DayModeItemWidget.init(dayModeItem);
+    return DayModeItemWidget(dayModeItem);
   }
+
+  DayModeItemWidget(DayModeItemMode item) : super(item);
 
   @override
   State<StatefulWidget> createState() => new _DayModeItemWidgetState();
 }
 
-class _DayModeItemWidgetState extends State<DayModeItemWidget> {
+class _DayModeItemWidgetState<DayModeItemWidget> extends BaseItemWidgetState<DayModeItemMode> {
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      debugShowCheckedModeBanner: true,
-      home: getDayModeWidget(widget.dayModeItem),
-    );
+  Widget getWidget(DayModeItemMode item) {
+    return getDayModeWidget(item);
   }
 
-  Widget getDayModeWidget(DayModeItem item) {
+  Widget getDayModeWidget(DayModeItemMode item) {
     return Container(
       color: Color(0xf2ffffff),
       height: 81,
@@ -162,12 +158,4 @@ class _DayModeItemWidgetState extends State<DayModeItemWidget> {
   }
 }
 
-class DayModeItem {
-  String tag;
-  double itemHeight;
-  bool isDay;
-  int prefer;
-  DayModeItemClickCallback callback;
-}
-
-void main() => runApp(DayModeItemWidget());
+void main() => runApp(DayModeItemWidget.forDesignTime());
