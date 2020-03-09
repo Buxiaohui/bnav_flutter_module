@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// 仅用于测试
 class MusicPage extends StatefulWidget {
   MusicPage();
 
   factory MusicPage.forDesignTime() {
-    // TODO: add arguments
     return new MusicPage();
   }
 
@@ -15,8 +15,7 @@ class MusicPage extends StatefulWidget {
   State<StatefulWidget> createState() => new _MyFlutterFlutterFirstState();
 }
 
-class _MyFlutterFlutterFirstState extends State<MusicPage>
-    with TickerProviderStateMixin {
+class _MyFlutterFlutterFirstState extends State<MusicPage> with TickerProviderStateMixin {
   static final String TAG = "BXH_AUDIO_PLAYER";
 
   void initState() {
@@ -54,8 +53,7 @@ class _MyFlutterFlutterFirstState extends State<MusicPage>
               new Container(
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
-                    image: new AssetImage(
-                        "assets/images/record_plate_bruno_mars.jpeg"),
+                    image: new AssetImage("assets/images/record_plate_bruno_mars.jpeg"),
                     fit: BoxFit.cover,
                     colorFilter: new ColorFilter.mode(
                       Colors.white30,

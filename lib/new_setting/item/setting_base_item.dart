@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'item_mode.dart';
+import '../mode/item_mode.dart';
 
 class BaseItemWidget<E extends BaseItemMode> extends StatefulWidget {
   E item;

@@ -1,9 +1,10 @@
+import 'package:bnav_flutter_module/new_setting/setting_new.dart';
 import 'package:bnav_flutter_module/setting/setting.dart';
-import 'package:bnav_flutter_module/setting/setting_new.dart';
 import 'package:flutter/material.dart';
 
 import 'music/page_music_player.dart';
 
+// TODO 规范 route tag
 void main() => runApp(_widgetForRoute("route2"));
 
 Widget _widgetForRoute(String route) {

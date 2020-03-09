@@ -1,10 +1,10 @@
-import 'package:bnav_flutter_module/setting/callback.dart';
-import 'package:bnav_flutter_module/setting/setting_base_item.dart';
+import 'package:bnav_flutter_module/new_setting/callback.dart';
+import 'package:bnav_flutter_module/new_setting/item/setting_base_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'item_mode.dart';
+import '../mode/item_mode.dart';
 
 /// 日夜模式 ：自动模式
 const int DAY_NIGHT_MODE_AUTO = 1;

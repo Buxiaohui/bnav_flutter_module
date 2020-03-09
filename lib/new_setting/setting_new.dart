@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:bnav_flutter_module/setting/item_mode.dart';
-import 'package:bnav_flutter_module/setting/setting_more_item.dart';
-import 'package:bnav_flutter_module/setting/setting_switch_item.dart';
+import 'package:bnav_flutter_module/new_setting/item/setting_switch_item.dart';
+import 'package:bnav_flutter_module/new_setting/mode/item_mode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'setting_day_mode_item.dart';
+import 'item/setting_day_mode_item.dart';
+import 'item/setting_more_item.dart';
 
 class NewSettingPage extends StatefulWidget {
   NewSettingPage();
