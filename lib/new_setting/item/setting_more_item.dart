@@ -49,21 +49,26 @@ class _MoreItemWidgetState<MoreItemWidget> extends BaseItemWidgetState<MoreItemM
         },
         child: Container(
           color: Colors.white,
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: Padding(
               padding: const EdgeInsets.fromLTRB(30, 0, 25, 0),
               child: Align(
                   alignment: Alignment.center,
                   child: Stack(
                     children: <Widget>[
-                      Visibility(
-                        visible: StringUtils.isStrNotEmpty(finalPath),
-                        child: Container(
-                          height: itemHeight,
-                          width: double.infinity,
-                          color: Colors.transparent,
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: getImageWidget(finalPath, tag),
+                      Positioned(
+                        right: 0,
+                        top: (itemHeight - 20) / 2,
+                        child: Visibility(
+                          visible: StringUtils.isStrNotEmpty(finalPath),
+                          child: Container(
+                            height: 20,
+                            width: 15,
+                            color: Colors.transparent,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: getImageWidget(finalPath, tag),
+                            ),
                           ),
                         ),
                       ),

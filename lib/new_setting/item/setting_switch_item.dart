@@ -47,6 +47,7 @@ class _SwitchItemWidgetState<SwitchItemWidget> extends BaseItemWidgetState<Switc
     String finalPath = checkIn ? imgPathCheckIn : imgPathCheckOut;
     return Container(
       color: Colors.white,
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 5),
       child: Padding(
           padding: const EdgeInsets.fromLTRB(30, 0, 25, 0),
           child: Align(

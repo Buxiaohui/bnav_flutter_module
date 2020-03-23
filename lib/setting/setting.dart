@@ -6,6 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+const String COMMUTE_GUIDE_SETTING_SOUND = 'commute_guide_setting_sound';
+const String COMMUTE_GUIDE_SETTING_SOUND_TURN = 'commute_guide_setting_sound_turn';
+const String COMMUTE_GUIDE_SETTING_SOUND_ELE_EYE = 'commute_guide_setting_sound_ele_eye';
+const String COMMUTE_GUIDE_SETTING_SCALE = 'commute_guide_scale_setting';
+const String NAVI_MODE_DAY_AND_NIGHT = 'NAVI_MODE_DAY_AND_NIGHT';
+
+const String NAVI_MODE_DAY_BOOLEAN = 'NAVI_MODE_DAY_AND_NIGHT_BOOLEAN';
+const String CONCERN_ROAD = 'ConcernRoad'; // 关注路线
+const String USER_HELPER = 'UserHelper'; // UFO
+
+/// 日夜模式 ：自动模式
+const int DAY_NIGHT_MODE_AUTO = 1;
+
+/// 日夜模式 ：白天模式
+const int DAY_NIGHT_MODE_DAY = 2;
+
+/// 日夜模式 ：夜晚模式
+const int DAY_NIGHT_MODE_NIGHT = 3;
+
 class SettingPage extends StatefulWidget {
   SettingPage();
 
@@ -19,26 +38,6 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   MethodChannel _methodChannel = MethodChannel("bnav.flutter.io.setting/method", const JSONMethodCodec());
-  static const BasicMessageChannel<String> _basicMessageChannel =
-      BasicMessageChannel<String>("bnav.flutter.io.setting/baseMsg", StringCodec());
-  static const String COMMUTE_GUIDE_SETTING_SOUND = 'commute_guide_setting_sound';
-  static const String COMMUTE_GUIDE_SETTING_SOUND_TURN = 'commute_guide_setting_sound_turn';
-  static const String COMMUTE_GUIDE_SETTING_SOUND_ELE_EYE = 'commute_guide_setting_sound_ele_eye';
-  static const String COMMUTE_GUIDE_SETTING_SCALE = 'commute_guide_scale_setting';
-  static const String NAVI_MODE_DAY_AND_NIGHT = 'NAVI_MODE_DAY_AND_NIGHT';
-
-  static const String NAVI_MODE_DAY_BOOLEAN = 'NAVI_MODE_DAY_AND_NIGHT_BOOLEAN';
-  static const String CONCERN_ROAD = 'ConcernRoad'; // 关注路线
-  static const String USER_HELPER = 'UserHelper'; // UFO
-
-  /// 日夜模式 ：自动模式
-  static const int DAY_NIGHT_MODE_AUTO = 1;
-
-  /// 日夜模式 ：白天模式
-  static const int DAY_NIGHT_MODE_DAY = 2;
-
-  /// 日夜模式 ：夜晚模式
-  static const int DAY_NIGHT_MODE_NIGHT = 3;
 
   /// this channel just for test
   Future<String> _handlePlatformIncrement(String message) async {
@@ -62,7 +61,6 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
-    _basicMessageChannel.setMessageHandler(_handlePlatformIncrement);
     _methodChannel.setMethodCallHandler((methodCall) => Future<dynamic>(() {
           String methodName = methodCall.method;
           print("methodChannel,methodName:$methodName");
@@ -503,8 +501,6 @@ class _SettingPageState extends State<SettingPage> {
             // something
             print("--onSwitchItemClick");
             _methodChannel.invokeMethod('onSwitchItemClick', {'key': '$tag'});
-            int count = _count++;
-            _basicMessageChannel.send('$count');
           }),
     );
   }
