@@ -1,11 +1,60 @@
+import 'dart:async';
+
 import 'package:bnav_flutter_module/new_setting/setting_new.dart';
 import 'package:bnav_flutter_module/setting/setting.dart';
 import 'package:flutter/material.dart';
 
 import 'music/page_music_player.dart';
 
+bool get isInDebugMode {
+  // Assume you're in production mode.
+  bool inDebugMode = false;
+  // Assert expressions are only evaluated during development. They are ignored
+  // in production. Therefore, this code only sets `inDebugMode` to true
+  // in a development environment.
+  // Assert 表达式只在开发模式下被执行，release发布模式下不会被执行的，因此，我们可以在开发模式下设置inDebugMode为true
+  assert(inDebugMode = true);
+  return inDebugMode;
+}
+
 // TODO 规范 route tag
-void main() => runApp(_widgetForRoute("route2"));
+Future<Null> main() async {
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    if (isInDebugMode) {
+      // 开发模式下，仅调用默认方式打印日志
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // release模式下
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
+  runZoned<Future<void>>(
+    () async {
+      runApp(_widgetForRoute("route2"));
+    },
+    zoneSpecification: ZoneSpecification(
+      // 通过 zoneSpecification，拦截应用中所有调用print输出日志的行为。
+      // 这样一来，我们APP中所有调用print方法输出日志的行为都会被拦截，通过这种方式，我们也可以在应用中记录日志，
+      // 等到应用触发未捕获的异常时，将异常信息和日志统一上报
+      print: (Zone self, ZoneDelegate parent, Zone zone, String line) async {
+        _collectLog(line); // 收集日志
+      },
+    ),
+    onError: (Object obj, StackTrace stack) async {
+      _reportError(obj, stack);
+    },
+  );
+}
+
+Future<Null> _reportError(dynamic error, dynamic stackTrace) async {
+  print("~~~~~~~~~~~信辉哥得永生~~~~~~~~~~~~~_reportError-闪开，我要装逼了~~~~~~~~~~~~~~~~~~~信辉哥得永生~~~~~~~~~~~~~~~~~~~~~\n");
+  print("$error" + "\n" + "$stackTrace");
+}
+
+Future<Null> _collectLog(String log) async {
+  // TODO
+  print('_collectLog:' + log);
+}
 
 Widget _widgetForRoute(String route) {
   switch (route) {

@@ -3,6 +3,7 @@ import 'package:bnav_flutter_module/new_setting/item/setting_switch_item.dart';
 import 'package:bnav_flutter_module/new_setting/mode/item_mode.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'item/setting_day_mode_item.dart';
