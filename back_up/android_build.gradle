@@ -1,0 +1,17 @@
+// Generated file. Do not edit.
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.kezong:fat-aar:1.2.11'
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

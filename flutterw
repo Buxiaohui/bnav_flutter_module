@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+target_download_dir=".flutter"
+distribution_url="https://gitee.com/mirrors/Flutter.git"
+#https://github.com/flutter/flutter.git 如果下载太慢可以使用 https://gitee.com/mirrors/Flutter.git
+target_flutter_channel="stable"
+target_flutter_version="1.22.2"
+echo "###### target_download_dir: ${target_download_dir}"
+echo "###### distribution_url: ${distribution_url}"
+echo "###### target_flutter_channel: ${target_flutter_channel}"
+echo "###### target_flutter_version: ${target_flutter_version}"
+
+# 初始化命令
+export PUB_HOSTED_URL=https://pub.flutter-io.cn
+export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
+
+osname=`uname`
+echo "###### osname: ${osname}"
+if [[ "$(uname)" == *NT* ]] #判断是否是Windows系统，嵌套中括号是支持正则使用
+then
+    flutter_commander="$target_download_dir/bin/flutter.bat"
+    dart_commander="$target_download_dir/bin/cache/dart-sdk/bin/dart.exe"
+else
+    flutter_commander="$target_download_dir/bin/flutter"
+    dart_commander="$target_download_dir/bin/cache/dart-sdk/bin/dart"
+fi
+
+echo "###### dart_commander: ${dart_commander}"
+echo "###### flutter_commander: ${flutter_commander}"
+
+# 执行方法封装，支持flutterw dart 来运行dart文件
+execFlutter() {
+echo "====execFlutter===="
+if [[ $1 == "dart" ]]
+then
+    str=$*
+    substr=${str:4}
+    $dart_commander $substr
+else
+    $flutter_commander $*
+fi
+}
+
+# 更新dart sdk、处理 pub
+handleSDK() {
+	echo "====handleSDK===="
+	# 下载 或 更新 dart sdk
+    $flutter_commander doctor
+    # 获取版本号
+    curFlutterVersion=`$flutter_commander --version | grep '^Flutter' | cut -d ' ' -f2`
+    # 更新.android、.ios内部的flutter sdk路径
+    $flutter_commander pub get
+    echo "===SDK handle success：$curFlutterVersion"
+}
+
+
+
+# 下载
+if [ ! -d $target_download_dir ]
+then
+    echo "===Create $target_download_dir dir"
+    mkdir $target_download_dir
+fi
+
+
+if [ ! -r $flutter_commander ]
+then
+    echo "===Start download SDK：git clone -b $target_flutter_channel $distribution_url $target_download_dir"
+    git clone -b $target_flutter_channel $distribution_url $target_download_dir
+    if [ -r $flutter_commander ]
+    then
+        handleSDK
+    else
+        echo "===SDK download failed"
+        exit -1
+    fi
+fi
+
+
+# 切换版本
+curFlutterVersion=`$flutter_commander --version | grep '^Flutter' | cut -d ' ' -f2`
+echo "###### curFlutterVersion: ${curFlutterVersion}"
+echo "###### target_flutter_version: ${target_flutter_version}"
+if [ $curFlutterVersion == $target_flutter_version ]
+then
+    execFlutter $*
+else
+    echo "===Current version：$curFlutterVersion，Target version：$target_flutter_version"
+    $flutter_commander channel $target_flutter_channel
+    $flutter_commander upgrade
+    $flutter_commander version -f "v$target_flutter_version"
+    # 判断切换版本是否成功
+    curFlutterVersion=`$flutter_commander --version | grep '^Flutter' | cut -d ' ' -f2`
+    if [ $curFlutterVersion == $target_flutter_version ]
+    then
+        handleSDK
+        execFlutter $*
+    else
+        echo "===Change version failed"
+    fi
+fi
+
+# 备注
+# 获取某个命令的返回值 使用 STR=$(uname) 或者 STR=`uname`
+# 变量赋值等号前后不能有空格 如 STR="123"
+# shell if 是对空格敏感 如：if [ "dd" == "dd" ]
+# if [[ "$(uname)" == *AA* ]] 嵌套中括号是支持正则使用

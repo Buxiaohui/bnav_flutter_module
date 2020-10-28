@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+echo "###### 开始复制 gradle配置到 .android/build.gradle #####"
+
+echo "###### 开始复制 gradle配置到 .android/Flutter/build.gradle #####"
+
+echo "###### 开始复制 编译Apk #####"
+
+
+

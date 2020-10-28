@@ -1,5 +1,5 @@
 // Generated file. Do not edit.
-import java.nio.file.Path
+
 import java.nio.file.Paths
 
 def localProperties = new Properties()
@@ -26,8 +26,8 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.kezong.fat-aar'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.kezong.fat-aar'
 
 group 'bnav_flutter_module'
 version '1.0'
@@ -49,7 +49,6 @@ flutter {
 }
 
 
-
 private Boolean useLocalEngine() {
     return project.hasProperty('local-engine-repo')
 }
@@ -67,20 +66,23 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     /** start **/
     File flutterRootF = project.file(flutterRoot)
-    println "flutterRootF:"+flutterRootF
-    println "flutterRootF.absolutePath:"+flutterRootF.absolutePath
+    println "flutterRootF:" + flutterRootF
+    println "flutterRootF.absolutePath:" + flutterRootF.absolutePath
+    def version = "1.0.0" // Match any version since there's only one.
     String engineVersionF = useLocalEngine()
-            ? "+" // Match any version since there's only one.
-            : "1.0.0-" + Paths.get(flutterRootF.absolutePath, "bin", "internal", "engine.version").toFile().text.trim()
-    embed "io.flutter:flutter_embedding_release:$engineVersionF"
-    embed "io.flutter:arm64_v8a_debug:$engineVersionF"
-    embed "io.flutter:armeabi_v7a_debug:$engineVersionF"
-    embed "io.flutter:x86_64_debug:$engineVersionF"
-    embed "io.flutter:x86_debug:$engineVersionF"
+            ? "+"
+            :  Paths.get(flutterRootF.absolutePath, "bin", "internal", "engine.version").toFile().text.trim()
+    embed "io.flutter:flutter_embedding_release:${version}-$engineVersionF"
+    embed "io.flutter:arm64_v8a_release:${version}-$engineVersionF"
+    embed "io.flutter:armeabi_v7a_release:${version}-$engineVersionF"
 
     plugins.each { name, _ ->
-        println "plugin_name:"+name
-        embed project(path: ":$name", configuration: 'default')
+        println "plugin_name:" + name
+        if(name.endsWith("_linux") ||name.endsWith("_windows") ||name.endsWith("_web") ||name.endsWith("_macos") ){
+
+        }else{
+            embed project(path: ":$name", configuration: 'default')
+        }
     }
     /** end **/
 }
